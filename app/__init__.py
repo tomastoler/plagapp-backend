@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 
@@ -19,7 +19,7 @@ def create_app() -> Flask:
     app = Flask(__name__, template_folder='templates')
     app.config['SECRET_KEY'] = 'qwertypoint'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_DATABASE}'
-    
+    cors = CORS(app)
     db.init_app(app)
     
     # routes / blueprints
