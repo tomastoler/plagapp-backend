@@ -34,16 +34,16 @@ def login():
     
     if existing_user and Passwords.compare(password, existing_user.password):
         login_user(existing_user, remember=True)
-        return jsonify({ "user": existing_user.to_dict() }), 400
+        return jsonify({ "user": existing_user.to_dict() }), 200
     
-    return jsonify({ "error": "error" }), 200
+    return jsonify({ "error": "error" }), 400
 
 @auth.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()
-    return '<p>Logout</p>'
+    return jsonify({ "message": "logged out" }), 200
 
 @auth.route('/unauthorized')
 def unauthorized():
-    return '<p>Unauthorized</p>'
+    return jsonify({ "message": "Unauthorized" }), 400

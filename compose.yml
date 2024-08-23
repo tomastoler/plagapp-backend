@@ -12,7 +12,7 @@ services:
     networks:
       - flask-app
 
-  certificates-app:
+  plagg-app:
     build: 
       context:  .
     ports:

@@ -17,9 +17,10 @@ DB_HOST = os.getenv('POSTGRES_HOST')
 def create_app() -> Flask:
     
     app = Flask(__name__, template_folder='templates')
-    app.config['SECRET_KEY'] = 'qwertypoint'
+    
+    app.secret_key = 'qwertypointasdasdasdasdasd'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_DATABASE}'
-    cors = CORS(app)
+    
     db.init_app(app)
     
     # routes / blueprints
@@ -38,6 +39,9 @@ def create_app() -> Flask:
     
     @login_manager.user_loader
     def load_user(id):
+        print(id)
         return User.query.get(int(id))
+    
+    CORS(app, supports_credentials=True)
     
     return app
