@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_cors import CORS
@@ -21,6 +21,12 @@ def create_app() -> Flask:
     app.secret_key = 'qwertypointasdasdasdasdasd'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_DATABASE}'
     
+    app.config.update(
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE='None',
+        SESSION_COOKIE_SECURE=True
+    )
+    
     db.init_app(app)
     
     # routes / blueprints
@@ -39,8 +45,17 @@ def create_app() -> Flask:
     
     @login_manager.user_loader
     def load_user(id):
-        print(id)
+        print(f'id: {id}')
         return User.query.get(int(id))
+    
+    @app.after_request
+    def apply_cookies(response):
+        cookie_value = request.cookies.get('session')
+        if cookie_value:
+            response.set_cookie('session', cookie_value, httponly=True, samesite='None', secure=True)
+        return response
+
+
     
     CORS(app, supports_credentials=True)
     
