@@ -14,6 +14,9 @@ DB_PASSWORD = os.getenv('POSTGRES_PASSWORD')
 DB_DATABASE = os.getenv('POSTGRES_DB')
 DB_HOST = os.getenv('POSTGRES_HOST')
 
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
+
 def create_app() -> Flask:
     
     app = Flask(__name__, template_folder='templates')
@@ -31,14 +34,16 @@ def create_app() -> Flask:
     
     # routes / blueprints
     from .routes.auth import auth
+    from .routes.admin import admin
     
     app.register_blueprint(auth, url_prefix='/auth')
+    app.register_blueprint(admin, url_prefix='/admin')
     
     from .models import User, Certificate
     
     with app.app_context():
         db.create_all()
-    
+        
     login_manager = LoginManager()
     login_manager.login_view = 'auth.unauthorized'
     login_manager.init_app(app)
@@ -54,9 +59,7 @@ def create_app() -> Flask:
         if cookie_value:
             response.set_cookie('session', cookie_value, httponly=True, samesite='None', secure=True)
         return response
-
-
     
     CORS(app, supports_credentials=True)
     
-    return app
+    return app    

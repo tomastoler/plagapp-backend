@@ -33,6 +33,9 @@ class Users:
         db.session.commit()
         return new_user
     
+    @staticmethod
+    def get_all() -> list[User]:
+        return User.query.all()
         
 class Passwords:
     

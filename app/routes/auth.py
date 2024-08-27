@@ -36,7 +36,7 @@ def login():
         login_user(existing_user, remember=True)
         return jsonify({ "user": existing_user.to_dict() }), 200
     
-    return jsonify({ "error": "error" }), 400
+    return jsonify({ "message": "credenciales incorrectas" }), 400
 
 @auth.route('/logout', methods=['POST'])
 @login_required

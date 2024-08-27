@@ -6,13 +6,13 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=plaggapp-db
+      - POSTGRES_DB=plagapp-db
     ports:
       - 5432:5432
     networks:
       - flask-app
 
-  plagg-app:
+  plagapp:
     build: 
       context:  .
     ports:
@@ -24,9 +24,16 @@ services:
       - POSTGRES_HOST=postgres-db
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=plaggapp-db
+      - POSTGRES_DB=plagapp-db
+      - ADMIN_EMAIL=admin@gmail.com
+      - ADMIN_PASSWORD=2444666668888888
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
       - flask-app
 
 networks:
   flask-app:
+
+volumes:
+  pgdata: ~
