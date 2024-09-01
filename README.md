@@ -10,15 +10,6 @@ git clone <repo>
 docker compose up --build -d
 ```
 
-## Routes
-```
-app
-  /auth
-    /login
-    /register
-    /logout
-```
-
 ## Set an admin user
 
 1. Create a new user

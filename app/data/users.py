@@ -34,8 +34,9 @@ class Users:
         return new_user
     
     @staticmethod
-    def get_all() -> list[User]:
-        return User.query.all()
+    def get_all(with_admins: bool = False) -> list[User]:
+        return User.query.all() if with_admins else User.query.filter_by(role = 'CLIENT')
+        
         
 class Passwords:
     
